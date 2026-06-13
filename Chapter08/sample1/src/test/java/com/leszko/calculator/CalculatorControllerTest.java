@@ -12,6 +12,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Unit tests for CalculatorController.
+ */
 @RunWith(SpringRunner.class)
 @WebMvcTest(CalculatorController.class)
 public class CalculatorControllerTest {
