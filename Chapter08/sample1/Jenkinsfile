@@ -14,23 +14,35 @@ pipeline {
         }
         stage("Compile") {
             steps {
-                sh "./gradlew compileJava"
+                sh """
+                  cd Chapter08/sample1
+                  ./gradlew compileJava
+                """
             }
         }
         stage("Unit test") {
             steps {
-                sh "./gradlew test"
+                sh """
+                  cd Chapter08/sample1
+                  ./gradlew test
+                """
             }
         }
         stage("Code coverage") {
             steps {
-                sh "./gradlew jacocoTestReport"
-                sh "./gradlew jacocoTestCoverageVerification"
+                sh """
+                  cd Chapter08/sample1
+                  ./gradlew jacocoTestReport
+                  ./gradlew jacocoTestCoverageVerification
+                """
             }
         }
         stage("Static code analysis") {
             steps {
-                sh "./gradlew checkstyleMain"
+                sh """
+                  cd Chapter08/sample1
+                  ./gradlew checkstyleMain
+                """
             }
         }
     }
