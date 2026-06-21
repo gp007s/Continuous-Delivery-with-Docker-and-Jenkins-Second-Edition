@@ -4,14 +4,6 @@ pipeline {
         pollSCM('* * * * *')
     }
     stages {
-        stage('Check README Changes') {
-            when {
-                changeset "**/README.md"
-            }
-            steps {
-                echo "README file changed"
-            }
-        }
         stage("Compile") {
             steps {
                 sh """
@@ -29,6 +21,9 @@ pipeline {
             }
         }
         stage("Code coverage") {
+            when {
+                changeset "**/*.java"
+            }
             steps {
                 sh """
                   cd Chapter08/sample1
@@ -38,6 +33,9 @@ pipeline {
             }
         }
         stage("Static code analysis") {
+            when {
+                changeset "**/*.java"
+            }
             steps {
                 sh """
                   cd Chapter08/sample1
@@ -48,10 +46,10 @@ pipeline {
     }
     post {
         success {
-            echo 'All tests passed!'
+            echo "pipeline ran perfectly"
         }
         failure {
-            echo 'Build or tests failed, sending notification...'
+            echo "pipeline failure"
         }
     }
 }
