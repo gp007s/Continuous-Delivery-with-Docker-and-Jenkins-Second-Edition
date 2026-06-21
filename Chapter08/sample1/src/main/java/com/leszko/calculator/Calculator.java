@@ -10,6 +10,7 @@ public class Calculator {
         final static int umlNUMBER1 = 3;
 	@Cacheable("sum")
 	public int sum(int a, int b) {
+        // Adding a comment to test java changeset conditional - Week 5
 		return a + b;
 	}
 }
