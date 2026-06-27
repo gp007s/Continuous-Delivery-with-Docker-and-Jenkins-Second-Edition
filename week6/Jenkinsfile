@@ -1,12 +1,6 @@
 pipeline {
     agent { label 'gradle-agent' }
     stages {
-        stage('Prepare environment') {
-            when { branch 'master' }
-            steps {
-                echo 'Running on master branch - full pipeline'
-            }
-        }
         stage('Compile') {
             steps {
                 sh """
@@ -35,7 +29,12 @@ pipeline {
             }
         }
         stage('Static code analysis') {
-            when { branch 'master' }
+            when {
+                anyOf {
+                    branch 'master'
+                    branch pattern: '.*feature.*', comparator: 'REGEXP'
+                }
+            }
             steps {
                 sh """
                   cd Chapter08/sample1
@@ -43,12 +42,17 @@ pipeline {
                 """
             }
         }
-        stage('Feature branch test') {
+        stage('Invalid branch') {
             when {
-                not { branch 'master' }
+                not {
+                    anyOf {
+                        branch 'master'
+                        branch pattern: '.*feature.*', comparator: 'REGEXP'
+                    }
+                }
             }
             steps {
-                echo 'Running on feature branch - unit tests only'
+                error "Pipeline failed: branch '${env.BRANCH_NAME}' is not master or a feature branch!"
             }
         }
     }
