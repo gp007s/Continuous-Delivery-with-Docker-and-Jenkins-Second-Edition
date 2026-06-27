@@ -1,0 +1,63 @@
+pipeline {
+    agent { label 'gradle-agent' }
+    stages {
+        stage('Prepare environment') {
+            when { branch 'master' }
+            steps {
+                echo 'Running on master branch - full pipeline'
+            }
+        }
+        stage('Compile') {
+            steps {
+                sh """
+                  cd Chapter08/sample1
+                  chmod +x gradlew
+                  ./gradlew compileJava
+                """
+            }
+        }
+        stage('Unit test') {
+            steps {
+                sh """
+                  cd Chapter08/sample1
+                  ./gradlew test
+                """
+            }
+        }
+        stage('Code coverage') {
+            when { branch 'master' }
+            steps {
+                sh """
+                  cd Chapter08/sample1
+                  ./gradlew jacocoTestReport
+                  ./gradlew jacocoTestCoverageVerification
+                """
+            }
+        }
+        stage('Static code analysis') {
+            when { branch 'master' }
+            steps {
+                sh """
+                  cd Chapter08/sample1
+                  ./gradlew checkstyleMain
+                """
+            }
+        }
+        stage('Feature branch test') {
+            when {
+                not { branch 'master' }
+            }
+            steps {
+                echo 'Running on feature branch - unit tests only'
+            }
+        }
+    }
+    post {
+        success {
+            echo "pipeline ran perfectly"
+        }
+        failure {
+            echo "pipeline failure"
+        }
+    }
+}
