@@ -1,5 +1,8 @@
 pipeline {
     agent { label 'gradle-agent' }
+    environment {
+        GRADLE_USER_HOME = '/home/jenkins/.gradle'
+    }
     stages {
         stage('Compile') {
             steps {
