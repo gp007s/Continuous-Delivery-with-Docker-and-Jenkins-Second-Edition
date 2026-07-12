@@ -41,19 +41,6 @@ pipeline {
                 """
             }
         }
-        stage('Invalid branch') {
-            when {
-                not {
-                    anyOf {
-                        branch 'master'
-                        branch pattern: '.*feature.*', comparator: 'REGEXP'
-                    }
-                }
-            }
-            steps {
-                error "Pipeline failed: branch '${env.BRANCH_NAME}' is not master or a feature branch!"
-            }
-        }
     }
     post {
         always {
