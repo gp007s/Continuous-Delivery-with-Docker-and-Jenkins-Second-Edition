@@ -1,0 +1,1 @@
+Testing autostatus plugin
