@@ -1,4 +1,5 @@
 pipeline {
+	
     agent { label 'gradle-agent' }
     stages {
         stage('Compile') {
@@ -42,6 +43,11 @@ pipeline {
               cd Chapter08/sample1
               ./gradlew jacocoTestReport
             """
+	    publishHTML(target: [
+            reportDir: 'Chapter08/sample1/build/reports/jacoco/test/html',
+            reportFiles: 'index.html',
+            reportName: 'JaCoCo Report'
+            ])
         }
         success {
             echo "tests pass!"
