@@ -1,4 +1,5 @@
 pipeline {
+	
     agent { label 'gradle-agent' }
     stages {
         stage('Compile') {
