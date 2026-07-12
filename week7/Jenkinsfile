@@ -28,12 +28,6 @@ pipeline {
             }
         }
         stage('Static code analysis') {
-            when {
-                anyOf {
-                    branch 'master'
-                    branch pattern: '.*feature.*', comparator: 'REGEXP'
-                }
-            }
             steps {
                 sh """
                   cd Chapter08/sample1
