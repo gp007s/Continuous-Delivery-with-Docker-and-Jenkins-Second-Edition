@@ -23,18 +23,11 @@ pipeline {
             steps {
                 sh """
                   cd Chapter08/sample1
-                  ./gradlew jacocoTestReport
                   ./gradlew jacocoTestCoverageVerification
                 """
             }
         }
         stage('Static code analysis') {
-            when {
-                anyOf {
-                    branch 'master'
-                    branch pattern: '.*feature.*', comparator: 'REGEXP'
-                }
-            }
             steps {
                 sh """
                   cd Chapter08/sample1
@@ -42,26 +35,19 @@ pipeline {
                 """
             }
         }
-        stage('Invalid branch') {
-            when {
-                not {
-                    anyOf {
-                        branch 'master'
-                        branch pattern: '.*feature.*', comparator: 'REGEXP'
-                    }
-                }
-            }
-            steps {
-                error "Pipeline failed: branch '${env.BRANCH_NAME}' is not master or a feature branch!"
-            }
-        }
     }
     post {
+        always {
+            sh """
+              cd Chapter08/sample1
+              ./gradlew jacocoTestReport
+            """
+        }
         success {
-            echo "pipeline ran perfectly"
+            echo "tests pass!"
         }
         failure {
-            echo "pipeline failure"
+            echo "tests fail!"
         }
     }
 }
