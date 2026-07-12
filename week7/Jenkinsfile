@@ -23,7 +23,6 @@ pipeline {
             steps {
                 sh """
                   cd Chapter08/sample1
-                  ./gradlew jacocoTestReport
                   ./gradlew jacocoTestCoverageVerification
                 """
             }
@@ -57,11 +56,17 @@ pipeline {
         }
     }
     post {
+        always {
+            sh """
+              cd Chapter08/sample1
+              ./gradlew jacocoTestReport
+            """
+        }
         success {
-            echo "pipeline ran perfectly"
+            echo "tests pass!"
         }
         failure {
-            echo "pipeline failure"
+            echo "tests fail!"
         }
     }
 }
